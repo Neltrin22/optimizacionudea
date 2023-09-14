@@ -8,7 +8,7 @@ data = []  # Lista para almacenar los valores en cada iteración
 def f(x):
     return 3*x**2 - 120*x + 100
 
-def bisec(xl, xu):
+def falsap(xl, xu):
     
     fxl = f(xl)
     fxu = f(xu)
@@ -26,11 +26,11 @@ def bisec(xl, xu):
             if abs(xl-xr) < abs(xr-xu):
                 xl = xr
                 data.append([xu, xl, xr, fxl, fxu, fxr, error])
-                return bisec(xl, xu)  
+                return falsap(xl, xu)  
             elif abs(xu-xr) < abs(xr-xl):
                 xu = xr
                 data.append([xu, xl, xr, fxl, fxu, fxr, error])
-                return bisec(xl, xu)  
+                return falsap(xl, xu)  
             else:
                 #data.append([xu, xl, xr, fxl, fxu, fxr, fxl * fxr, error])
                 return xr
@@ -38,5 +38,5 @@ def bisec(xl, xu):
         return "Elija otros valores"
 
 
-root = bisec(xl, xu)
+root = falsap(xl, xu)
 print(root)

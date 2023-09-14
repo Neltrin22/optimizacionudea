@@ -2,44 +2,42 @@ import numpy as np
 import pandas as pd
 
 tolerancia = 1e-6
-xl = -10
-xu = 20
-a = 0.61
-x1 = xl + a 
-x2 = xl + b
+xl = 0
+xu = 4
+
+#b = 0.618*0.618*xu - xl
+
 data = []  # Lista para almacenar los valores en cada iteración
 def f(x):
-    return 3*x**2 - 120*x + 100
+    return 2 * np.sin(x) - x**2 / 10
 
-def bisec(xl, xu):
-    
-    fxl = f(xl)
-    fxu = f(xu)
+def dorada(xl, xu):
+    error = abs(xu - xl)
+    d = 0.618*(xu - xl)
+    x1 = xl + d 
+    x2 = xu - d
+    fx1 = f(x1)
+    fx2 = f(x2)
 
-    if fxl * fxu < 0:
-        xr = (xl + xu) / 2
-        fxr = f(xr)
-        error = abs(xu - xr)
-        #data.append([xu, xl, xr, fxl, fxu, fxr, fxl * fxr, error])
+            
         
-        if error <= tolerancia:
-            df = pd.DataFrame(data, columns=["xu", "xl", "xr", "fxl", "fxu", "fxr", "fxl*fxr", "error"])
-            return df, xr
-        else:
-            if fxl * fxr < 0:
-                xu = xr
-                data.append([xu, xl, xr, fxl, fxu, fxr, fxl * fxr, error])
-                return bisec(xl, xu)  
-            elif fxl * fxr > 0:
-                xl = xr
-                data.append([xu, xl, xr, fxl, fxu, fxr, fxl * fxr, error])
-                return bisec(xl, xu)  
-            else:
-                #data.append([xu, xl, xr, fxl, fxu, fxr, fxl * fxr, error])
-                return xr
+    if error <= tolerancia:
+            df = pd.DataFrame(data, columns=["xu", "xl", "x1", "x2", "error"])
+            return df
     else:
-        return "Elija otros valores"
+            if fx2 > fx1:
+                xu = x2
+                data.append([xu, xl, x1, x2, error])
+                return dorada(xl, xu)  
+            elif fx2 < fx1:
+                xl = x1
+                data.append([xu, xl, x1, x2, error])
+                return dorada(xl, xu)  
+            else:
+                
+                return x1
+    
 
 
-root = bisec(xl, xu)
+root = dorada(xl, xu)
 print(root)
